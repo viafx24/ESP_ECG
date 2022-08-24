@@ -17,6 +17,11 @@ WiFiServer server(80);
 
 int Wire_Not_Plugged=2000;
 
+unsigned long Time;
+
+String Data_wifi;
+
+
 void setup()
 {
 
@@ -51,8 +56,7 @@ void loop()
 
   if (client)
   { // if you get a client,
-    // Serial.println("New Client."); // print a message out the serial port
-    String currentLine = "";
+    Time=millis();
 
     while (client.connected())
     { // loop while the client's connected
@@ -66,10 +70,14 @@ void loop()
       {
         // send the value of analog input 0:
         //  Serial.println(analogRead(34));
-        client.println(analogRead(34));
+
+        Data_wifi = String(String(millis()-Time) + ","  + String(analogRead(34)));
+        client.println(Data_wifi);
+        //Serial.println(Data_wifi);
+        //client.println(analogRead(34));
       }
       //Wait for a bit to keep serial data from saturating
-      delay(0.5);
+      delay(0.1);
     }
 
     client.stop();
